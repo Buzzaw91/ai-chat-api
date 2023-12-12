@@ -9,6 +9,3 @@ AI Chat API
 ```bash
 $ npm install
 ```
-
-## Running the app
-
