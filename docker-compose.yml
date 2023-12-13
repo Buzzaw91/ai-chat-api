@@ -1,0 +1,14 @@
+version: '3'
+services:
+  ai-chat-dev:
+    image: mariadb
+    container_name: ai-chat-dev
+    volumes:
+      - /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PWD}
+    ports:
+      - ${MYSQL_PORT}:3306
