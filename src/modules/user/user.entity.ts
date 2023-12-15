@@ -4,14 +4,16 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { AuthToken } from '../auth/auth.entity';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true, nullable: true })
+  @Column({ unique: true })
   email: string;
 
   @Column({ nullable: true })
@@ -21,10 +23,15 @@ export class User {
   lastName: string;
 
   @Column({ select: false })
-  password: string;
+  passwordHash: string;
 
   @Column({ default: true })
   active: boolean;
+
+  @OneToMany(() => AuthToken, (authToken) => authToken.user, {
+    cascade: ['insert', 'update', 'remove'],
+  })
+  authTokens: AuthToken[];
 
   /* Timestamps */
   @CreateDateColumn()
