@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { DevtoolsModule } from '@nestjs/devtools-integration'
 import { UserModule } from './modules/user/user.module'
 import { AuthModule } from './modules/auth/auth.module'
 
@@ -22,6 +23,9 @@ import { AuthModule } from './modules/auth/auth.module'
         charset: 'utf8mb4',
         migrationsRun: true,
       }),
+    }),
+    DevtoolsModule.register({
+      http: process.env.NODE_ENV !== 'production',
     }),
     UserModule,
     AuthModule,
