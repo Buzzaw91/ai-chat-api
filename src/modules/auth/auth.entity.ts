@@ -5,23 +5,23 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
-} from 'typeorm';
-import { User } from '../user/user.entity';
+} from 'typeorm'
+import { User } from '../user/user.entity'
 
 @Entity()
 export class AuthToken {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  userId: number;
+  userId: number
 
   @ManyToOne(() => User, (user) => user.authTokens)
-  user: User;
+  user: User
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date
 }

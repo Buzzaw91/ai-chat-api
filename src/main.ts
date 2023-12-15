@@ -1,10 +1,10 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import helmet from 'helmet';
-import * as dotenv from 'dotenv';
-import * as cookieParser from 'cookie-parser';
+import { NestFactory } from '@nestjs/core'
+import { AppModule } from './app.module'
+import helmet from 'helmet'
+import * as dotenv from 'dotenv'
+import * as cookieParser from 'cookie-parser'
 
-dotenv.config();
+dotenv.config()
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -15,11 +15,11 @@ async function bootstrap() {
       optionsSuccessStatus: 204,
       credentials: true,
     },
-  });
+  })
 
-  app.use(cookieParser());
-  app.use(helmet());
+  app.use(cookieParser())
+  app.use(helmet())
 
-  await app.listen(3000);
+  await app.listen(3000)
 }
-bootstrap();
+bootstrap()

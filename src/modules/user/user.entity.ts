@@ -5,38 +5,38 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-} from 'typeorm';
-import { AuthToken } from '../auth/auth.entity';
+} from 'typeorm'
+import { AuthToken } from '../auth/auth.entity'
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column({ unique: true })
-  email: string;
+  email: string
 
   @Column({ nullable: true })
-  firstName: string;
+  firstName: string
 
   @Column({ nullable: true })
-  lastName: string;
+  lastName: string
 
   @Column({ select: false })
-  passwordHash: string;
+  passwordHash: string
 
   @Column({ default: true })
-  active: boolean;
+  active: boolean
 
   @OneToMany(() => AuthToken, (authToken) => authToken.user, {
     cascade: ['insert', 'update', 'remove'],
   })
-  authTokens: AuthToken[];
+  authTokens: AuthToken[]
 
   /* Timestamps */
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date
 }
