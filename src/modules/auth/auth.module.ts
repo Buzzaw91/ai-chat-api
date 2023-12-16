@@ -23,6 +23,6 @@ import APP_CONFIG from '../../app.config'
   ],
   controllers: [],
   providers: [AuthService, JwtStrategy],
-  exports: [PassportModule],
+  exports: [PassportModule, AuthService],
 })
 export class AuthModule {}

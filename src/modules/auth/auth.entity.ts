@@ -10,8 +10,8 @@ import { User } from '../user/user.entity'
 
 @Entity()
 export class AuthToken {
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryGeneratedColumn('uuid')
+  id: string
 
   @Column()
   userId: number

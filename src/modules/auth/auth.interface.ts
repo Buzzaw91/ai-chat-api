@@ -5,6 +5,5 @@ export interface LoginParams {
 
 export interface JwtPayload {
   readonly id: number
-  readonly role: string
-  readonly tokenId?: number
+  readonly tokenId?: string
 }
