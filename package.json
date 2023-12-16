@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@google-cloud/vertexai": "github:googleapis/nodejs-vertexai",
     "@nestjs/common": "10.2.10",
     "@nestjs/core": "10.2.10",
     "@nestjs/devtools-integration": "0.1.5",
