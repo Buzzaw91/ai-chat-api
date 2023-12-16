@@ -1,7 +1,15 @@
-import { Controller, Body, Post, UsePipes, Res } from '@nestjs/common'
+import {
+  Controller,
+  Body,
+  Post,
+  UsePipes,
+  UseGuards,
+  Res,
+  Req,
+} from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { ZodValidationPipe } from 'nestjs-zod'
-import { Response } from 'express'
+import { Response, Request } from 'express'
 import { AuthService } from './auth.service'
 import { LoginDto } from './auth.dto'
 
@@ -17,6 +25,14 @@ export class AuthController {
     @Res() response: Response,
   ) {
     const result = await this.authService.login(loginDto)
+
+    response.json(result)
+  }
+
+  @Post('logout')
+  @UseGuards(AuthGuard('jwt'))
+  async logout(@Req() request: Request, @Res() response: Response) {
+    const result = await this.authService.logout(request)
 
     response.json(result)
   }

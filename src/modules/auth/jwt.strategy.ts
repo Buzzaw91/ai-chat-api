@@ -28,6 +28,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ): Promise<JwtPayload | UnauthorizedException> {
     const user = await this.authService.validateUser(payload)
     if (!user) throw new UnauthorizedException()
-    return user
+    return { ...user, tokenId: payload.tokenId }
   }
 }

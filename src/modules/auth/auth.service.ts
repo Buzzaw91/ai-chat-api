@@ -1,12 +1,18 @@
 import { v4 as uuidv4 } from 'uuid'
 import * as bcrypt from 'bcrypt'
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Request } from 'express'
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+  InternalServerErrorException,
+} from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { AuthToken } from './auth.entity'
 import { User } from '../user/user.entity'
-import { JwtPayload } from './auth.interface'
+import { JwtPayload, RequestUser } from './auth.interface'
 import { LoginDto } from './auth.dto'
 
 @Injectable()
@@ -84,5 +90,27 @@ export class AuthService {
       }
     }
     throw new BadRequestException('Invalid credentials')
+  }
+
+  async logout(request: Request): Promise<any> {
+    const user = request.user as RequestUser
+
+    // Validate user and tokenId
+    if (!user || !user.tokenId) {
+      throw new UnauthorizedException('Invalid user or token data')
+    }
+
+    try {
+      const deleteResult = await this.authTokenRepository.delete({
+        id: user.tokenId,
+      })
+
+      if (!deleteResult.affected) {
+        throw new InternalServerErrorException('Token deletion failed')
+      }
+      return deleteResult
+    } catch (error) {
+      throw new InternalServerErrorException('An error occurred during logout')
+    }
   }
 }
