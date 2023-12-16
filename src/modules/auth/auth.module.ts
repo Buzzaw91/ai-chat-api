@@ -7,6 +7,7 @@ import { JwtStrategy } from './jwt.strategy'
 import { User } from '../user/user.entity'
 import { AuthToken } from './auth.entity'
 import APP_CONFIG from '../../app.config'
+import { AuthController } from './auth.controller'
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import APP_CONFIG from '../../app.config'
     }),
     TypeOrmModule.forFeature([User, AuthToken]),
   ],
-  controllers: [],
+  controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
   exports: [PassportModule, AuthService],
 })

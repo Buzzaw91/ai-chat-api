@@ -1,11 +1,13 @@
 import { v4 as uuidv4 } from 'uuid'
-import { Injectable } from '@nestjs/common'
+import * as bcrypt from 'bcrypt'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { AuthToken } from './auth.entity'
 import { User } from '../user/user.entity'
 import { JwtPayload } from './auth.interface'
+import { LoginDto } from './auth.dto'
 
 @Injectable()
 export class AuthService {
@@ -51,5 +53,36 @@ export class AuthService {
       }
     }
     return false
+  }
+
+  async login(params: LoginDto): Promise<{ token: string; user: User }> {
+    const { email, password } = params
+
+    const userPw = await this.userRepository.findOne({
+      where: {
+        email,
+        active: true,
+      },
+      select: ['id', 'passwordHash'],
+    })
+
+    const user = await this.userRepository.findOne({
+      where: {
+        email,
+        active: true,
+      },
+    })
+
+    if (userPw && user) {
+      const loginSuccess = await bcrypt.compare(password, userPw.passwordHash)
+      if (loginSuccess) {
+        const token = await this.createToken(user)
+        return {
+          token,
+          user,
+        }
+      }
+    }
+    throw new BadRequestException('Invalid credentials')
   }
 }
