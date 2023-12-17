@@ -3,14 +3,13 @@ import { AppModule } from './app.module'
 import helmet from 'helmet'
 import * as dotenv from 'dotenv'
 import * as cookieParser from 'cookie-parser'
-import { readFileSync } from 'fs'
 
 dotenv.config()
 
 async function bootstrap() {
   const httpsOptions = {
-    key: readFileSync('server.key'),
-    cert: readFileSync('server.cert'),
+    key: process.env.SSL_KEY,
+    cert: process.env.SSL_CERT,
   }
 
   const app = await NestFactory.create(AppModule, {
