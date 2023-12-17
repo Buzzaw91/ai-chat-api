@@ -3,12 +3,18 @@ import { AppModule } from './app.module'
 import helmet from 'helmet'
 import * as dotenv from 'dotenv'
 import * as cookieParser from 'cookie-parser'
+import { readFileSync } from 'fs'
 
 dotenv.config()
 
 async function bootstrap() {
+  const httpsOptions = {
+    key: readFileSync('server.key'),
+    cert: readFileSync('server.cert'),
+  }
+
   const app = await NestFactory.create(AppModule, {
-    snapshot: true,
+    httpsOptions,
     cors: {
       origin: true,
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -22,5 +28,7 @@ async function bootstrap() {
   app.use(helmet())
 
   await app.listen(3000)
+  console.log(`Application is running on: https://localhost:3000`)
 }
+
 bootstrap()
