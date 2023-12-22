@@ -1,23 +1,34 @@
-import { Injectable } from '@nestjs/common'
-import { Observable, interval, map, take } from 'rxjs'
-import { MessageEvent } from '@nestjs/common'
-import { v4 as uuidv4 } from 'uuid'
+import { Inject, Injectable } from '@nestjs/common'
+import { GenerativeModel } from '@google-cloud/vertexai'
 
 @Injectable()
 export class ChatService {
-  sayHello(): Observable<MessageEvent> {
-    const numberOfMessages = 5
+  constructor(
+    @Inject('GENERATIVE_MODEL')
+    private readonly generativeModel: GenerativeModel,
+  ) {}
 
-    return interval(1000).pipe(
-      take(numberOfMessages), // Take only the first 5 emissions
-      map((count) => {
-        // Map each emission to a MessageEvent
-        return {
-          event: 'message',
-          id: uuidv4(),
-          data: `Message ${count + 1}`,
-        }
-      }),
-    )
+  // async startChatSession() {
+  //   const chat = this.generativeModel.startChat()
+  //   return chat
+  // }
+
+  async sendMessage() {
+    const chat = this.generativeModel.startChat({})
+    const chatInput1 = 'How can I learn more about Node.js?'
+
+    try {
+      const result1 = await chat.sendMessageStream(chatInput1)
+      for await (const item of result1.stream) {
+        console.log(item.candidates[0].content.parts[0].text)
+      }
+      console.log(
+        'aggregated response: ',
+        JSON.stringify(await result1.response),
+      )
+      return result1.stream
+    } catch (error) {
+      console.log('error', error)
+    }
   }
 }
