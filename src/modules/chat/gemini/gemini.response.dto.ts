@@ -24,7 +24,7 @@ const harmProbabilityEnum = z.enum([
   'HIGH',
 ])
 
-const roleEnum = z.enum(['model'])
+const roleEnum = z.enum(['MODEL'])
 
 const safetyRatingSchema = z.object({
   category: harmCategoryEnum,
