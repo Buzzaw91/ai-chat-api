@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { DevtoolsModule } from '@nestjs/devtools-integration'
 import { UserModule } from './modules/user/user.module'
 import { AuthModule } from './modules/auth/auth.module'
+import { ChatModule } from './modules/chat/chat.module'
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { AuthModule } from './modules/auth/auth.module'
     }),
     UserModule,
     AuthModule,
+    ChatModule,
   ],
   controllers: [],
   providers: [],
