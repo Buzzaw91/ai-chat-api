@@ -1,17 +1,14 @@
-import { Controller, Sse, UseGuards } from '@nestjs/common'
+import { Controller, UseGuards, Get } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { Observable } from 'rxjs'
-import { MessageEvent } from '@nestjs/common'
-
 import { ChatService } from './chat.service'
 
 @Controller('chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
+  @Get('messages')
   @UseGuards(AuthGuard('jwt'))
-  @Sse('sse')
-  sse(): Observable<MessageEvent> {
-    return this.chatService.sayHello()
+  messages() {
+    return this.chatService.sendMessage()
   }
 }
