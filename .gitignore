@@ -18,6 +18,10 @@ lerna-debug.log*
 /coverage
 /.nyc_output
 
+# Certificates
+server.key
+server.cert
+
 # IDEs and editors
 /.idea
 .project

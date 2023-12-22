@@ -7,7 +7,13 @@ import * as cookieParser from 'cookie-parser'
 dotenv.config()
 
 async function bootstrap() {
+  const httpsOptions = {
+    key: process.env.SSL_KEY,
+    cert: process.env.SSL_CERT,
+  }
+
   const app = await NestFactory.create(AppModule, {
+    httpsOptions,
     snapshot: true,
     cors: {
       origin: true,
@@ -22,5 +28,7 @@ async function bootstrap() {
   app.use(helmet())
 
   await app.listen(3000)
+  console.log(`Application is running on: https://localhost:3000`)
 }
+
 bootstrap()
